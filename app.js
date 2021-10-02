@@ -7,7 +7,13 @@ var search_grid = [
 
 var words = ["HI", "NO", "FUN"];
 
-
+for (var k in search_grid) {
+    var row = search_grid[k]
+    for (var l in row) {
+        var letter = row[l]
+        console.log(letter + k + l) 
+    }
+};
 
 for (var i in words) {
   console.log(words[i])
