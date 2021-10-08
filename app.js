@@ -30,6 +30,32 @@ var search_grid = [
     ["M", "N", "O", "P"]
 ];
 
+/*
+search example
+
+start 1,1
+
+try
+[x-1,y]
+[x-1,y+1]
+[x,y+1]
+[x+1,y+1]
+[x+1,y]
+[x+1,y-1]
+[x,y-1]
+[x+1,y-1]
+
+if at any point is negative or greater than the length of the search grid, skip it
+return all remaining values and look for match
+if there is a match, search down the same line
+
+["0,0", "0,1", "0,2", "0,3"],
+["1,0", "1,1", "1,2", "1,3"],
+["2,0", "2,1", "2,2", "2,3"],
+["3,0", "3,1", "3,2", "3,3"]
+*/
+
+
 var words = ["HI", "NO", "FUN"];
 
 for (var i in words) {
@@ -37,5 +63,6 @@ for (var i in words) {
     var word = words[i]
     var first_letter = word.charAt(0)
     var starts = search_grid_for_start(search_grid,first_letter)
+    console.log(starts[0])
     //TODO look in adjacent spot for matches
 };
