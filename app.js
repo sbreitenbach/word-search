@@ -66,6 +66,17 @@ function find_adjacent_points(search_grid,starting_point)
     return adjacent_points;
 }
 
+function check_for_match()
+{
+    //check for length of word and number of matches
+    //if we have an equal number sequential of matches to the length of the word then return true
+    //find direction to search by finding the difference from the second point to the starting point
+    //apply same difference to search down the rest of the line
+    //if down the line the next point isn't valid then return false
+    //if the point is valid but doesn't match the character return false
+    return
+}
+
 //can initially go up, down, left, right, and diagonal
 //letters must be sequential (but can be spelled in reverse)
 //all letters must follow the same direction
@@ -79,7 +90,6 @@ for (var i in words) {
     var first_letter = word.charAt(0)
     var starts = search_grid_for_start(search_grid,first_letter)
     console.log(starts[0]);
-    //TODO look in adjacent spot for matches
     for (var i in starts)
     {  
         var adjacent_points = find_adjacent_points(search_grid,starts[i])
