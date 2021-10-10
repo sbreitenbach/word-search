@@ -13,53 +13,13 @@ function search_grid_for_start(grid, first_letter)
         }
     };
     return results
- };
+ }; 
 
-function check_for_match(word,start)
-{
-    //can initially go up, down, left, right, and diagonal
-    //letters must be sequential (but can be spelled in reverse)
-    //all letters must follow the same direction
-    //cannot search outside the bounds of the grid or "jump" from the end of one side to the start of the other 
-    return
-}
 var search_grid = [
     ["F", "B", "H", "D"],
     ["E", "U", "I", "H"],
     ["I", "J", "N", "L"],
     ["M", "N", "O", "P"]
-];
-
-/*
-search example
-
-start 1,1
-
-try
-[x-1,y]
-[x-1,y+1]
-[x,y+1]
-[x+1,y+1]
-[x+1,y]
-[x+1,y-1]
-[x,y-1]
-[x-1,y-1]
-
-if at any point is negative or greater than the length of the search grid, skip it
-return all remaining values and look for match
-if there is a match, search down the same line
-
-["0,0", "0,1", "0,2", "0,3"],
-["1,0", "1,1", "1,2", "1,3"],
-["2,0", "2,1", "2,2", "2,3"],
-["3,0", "3,1", "3,2", "3,3"]
-*/
-
-var test_grid =[ 
-    ["0,0", "0,1", "0,2", "0,3"],
-    ["1,0", "1,1", "1,2", "1,3"],
-    ["2,0", "2,1", "2,2", "2,3"],
-    ["3,0", "3,1", "3,2", "3,3"] 
 ];
 
 function is_valid_adjacent_point(search_grid,point,starting_point)
@@ -99,7 +59,6 @@ function find_adjacent_points(search_grid,starting_point)
                     if (is_valid_adjacent_point(search_grid,new_point,starting_point))
                         {
                             new_point = search_grid[new_x][new_y];
-                            console.log(new_point)
                             adjacent_points.push(new_point);
                         }
                 }
@@ -107,10 +66,11 @@ function find_adjacent_points(search_grid,starting_point)
     return adjacent_points;
 }
 
-find_adjacent_points(test_grid,[2,3])
+//can initially go up, down, left, right, and diagonal
+//letters must be sequential (but can be spelled in reverse)
+//all letters must follow the same direction
+//cannot search outside the bounds of the grid or "jump" from the end of one side to the start of the other
 
-
-/*
 var words = ["HI", "NO", "FUN"];
 
 for (var i in words) {
@@ -118,7 +78,18 @@ for (var i in words) {
     var word = words[i]
     var first_letter = word.charAt(0)
     var starts = search_grid_for_start(search_grid,first_letter)
-    console.log(starts[0])
+    console.log(starts[0]);
     //TODO look in adjacent spot for matches
+    for (var i in starts)
+    {  
+        var adjacent_points = find_adjacent_points(search_grid,starts[i])
+            for (var j in adjacent_points)
+             {
+                 if (adjacent_points[j] = word.charAt(1))
+                    {
+                        console.log(adjacent_points[j])
+                    }
+             };
+
+    }
 };
-*/
