@@ -66,7 +66,22 @@ function find_adjacent_points(search_grid,starting_point)
     return adjacent_points;
 }
 
-function check_for_match()
+function next_point_is_match(current_point,previous_point,letter,search_grid)
+    {
+        var x_change = previous_point[0]-current_point[0];
+        var y_change = previous_point[1]-current_point[1];
+        var next_point_x = current_point[0] - x_change
+        var next_point_y = current_point[1] - y_change 
+        var next_point = [next_point_x, next_point_y]
+        if(is_valid_adjacent_point(search_grid,next_point,current_point) && (letter == search_grid[next_point_x][next_point_y])) 
+            {
+                return [true,next_point] 
+            }
+        else return false;
+    }
+
+
+function check_for_match(search_grid, word, starting_point, second_point)
 {
     //check for length of word and number of matches
     //if we have an equal number sequential of matches to the length of the word then return true
@@ -74,7 +89,26 @@ function check_for_match()
     //apply same difference to search down the rest of the line
     //if down the line the next point isn't valid then return false
     //if the point is valid but doesn't match the character return false
-    return
+    
+    if (word.length == 2)
+    {
+        return true
+    }
+
+    for (var i = 2; i < (word.length - 2); i++)
+    {
+        if (i == word.length && next_point_is_match(second_point,previous_point,word.charAt(i)))
+        {
+            return true
+        }
+
+        else if (!next_point_is_match(second_point,previous_point,word.charAt(i)))
+        {
+            return false
+        }
+    };
+
+    return false
 }
 
 //can initially go up, down, left, right, and diagonal
@@ -95,9 +129,10 @@ for (var i in words) {
         var adjacent_points = find_adjacent_points(search_grid,starts[i])
             for (var j in adjacent_points)
              {
-                 if (adjacent_points[j] = word.charAt(1))
+                 if (adjacent_points[j] == word.charAt(1))
                     {
                         console.log(adjacent_points[j])
+                        console.log(check_for_match(search_grid,word,starts[i],adjacent_points[j]))
                     }
              };
 
