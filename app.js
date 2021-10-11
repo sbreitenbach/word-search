@@ -22,7 +22,6 @@ function is_valid_adjacent_point(search_grid, point, starting_point) {
         return false
     }
     //TODO this will only work with a square grid
-    //TODO crashing here
     else if (point[0] >= search_grid.length || point[1] >= search_grid.length) {
         return false
     }
@@ -50,8 +49,8 @@ function find_adjacent_points(search_grid, starting_point) {
 }
 
 function next_point_is_match(current_point, next_point, letter, search_grid) {
-    if (is_valid_adjacent_point(search_grid, next_point, current_point) && (letter == search_grid[0][1])) {
-        return [true]
+    if (is_valid_adjacent_point(search_grid, next_point, current_point) && (letter == search_grid[next_point[0]][[next_point[1]]])) {
+        return true
     }
     else return false;
 }
@@ -62,7 +61,6 @@ function find_next_point_to_try(previous_point, current_point) {
     var next_point_x = parseInt(current_point[0]) - x_change
     var next_point_y = parseInt(current_point[1]) - y_change
     var next_point = [next_point_x, next_point_y]
-    console.log(next_point)
     return next_point
 }
 
@@ -83,11 +81,12 @@ function check_for_match(search_grid, word, starting_point, current_point) {
     var previous_point = starting_point
     for (var i = 0; i < (word.length - 2); i++) {
         var next_point = find_next_point_to_try(previous_point, current_point)
-        if (i + 3 == word.length && next_point_is_match(next_point, previous_point, word.charAt(i + 3), search_grid)) {
+        if (i + 3 == word.length && next_point_is_match(current_point, next_point, word.charAt(i + 2), search_grid)) {
+            console.log("Found word " + word + " Starting at: " + starting_point + " Ending at: " + current_point)
             return true
         }
 
-        else if (!next_point_is_match(next_point, previous_point, word.charAt(i + 2), search_grid)) {
+        else if (!next_point_is_match(next_point, current_point, word.charAt(i + 2), search_grid)) {
             return false
         }
     };
@@ -105,19 +104,16 @@ var search_grid = [
 var words = ["HI", "NO", "FUN"];
 
 for (var i in words) {
-    console.log(words[i])
     var word = words[i]
     var first_letter = word.charAt(0)
     var starts = search_grid_for_start(search_grid, first_letter)
-    console.log(starts[0]);
     for (var i in starts) {
-        //need to have grid here, not the letter
         var adjacent_points = find_adjacent_points(search_grid, starts[i])
         for (var j in adjacent_points) {
             current_point = adjacent_points[j]
             current_letter = search_grid[current_point[0]][[current_point[1]]]
             if (current_letter == word.charAt(1)) {
-                console.log(check_for_match(search_grid, word, starts[i], current_point))
+                check_for_match(search_grid, word, starts[i], current_point)
             }
         };
 
