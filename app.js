@@ -1,5 +1,4 @@
-function search_grid_for_start(grid, first_letter)
- {  
+function search_grid_for_start(grid, first_letter) {
     //TODO - this will return every starting point
     //Rework to find and test one at a time 
     var results = [];
@@ -7,89 +6,118 @@ function search_grid_for_start(grid, first_letter)
         var row = grid[x]
         for (var y in row) {
             var letter = row[y]
-            if (letter == first_letter) { 
-                results.push([x,y])
-             };
+            if (letter == first_letter) {
+                results.push([x, y])
+            };
         }
     };
     return results
- }; 
+};
 
-var search_grid = [
-    ["F", "B", "H", "D"],
-    ["E", "U", "I", "H"],
-    ["I", "J", "N", "L"],
-    ["M", "N", "O", "P"]
-];
-
-function is_valid_adjacent_point(search_grid,point,starting_point)
-{
-    if (point[0] < 0 || point[1] < 0)
-        {
-            return false
-        }
-    else if (point[0] == starting_point[0] && point[1] == starting_point[1])
-        {
-            return false
-        }
+function is_valid_adjacent_point(search_grid, point, starting_point) {
+    if (point[0] < 0 || point[1] < 0) {
+        return false
+    }
+    else if (point[0] == starting_point[0] && point[1] == starting_point[1]) {
+        return false
+    }
     //TODO this will only work with a square grid
-    else if (point[0] >= search_grid.length || point[1] >= search_grid.length)
-        {
-            return false
-        }
-    else 
-        {
-            return true
-        }
+    else if (point[0] >= search_grid.length || point[1] >= search_grid.length) {
+        return false
+    }
+    else {
+        return true
+    }
 }
 
-function find_adjacent_points(search_grid,starting_point)
-{
-    var adjustments = [-1,0,1]
+function find_adjacent_points(search_grid, starting_point) {
+    var adjustments = [-1, 0, 1]
     var adjacent_points = []
-    for (var i in adjustments)
-        {
-            var x_adjustment = adjustments[i]
-            for (var j in adjustments)
-                {
-                    var y_adjustment = adjustments[j]
-                    new_x = parseInt(starting_point[0]) + parseInt(x_adjustment);
-                    new_y = parseInt(starting_point[1]) + parseInt(y_adjustment);
-                    new_point = [new_x,new_y]
-                    if (is_valid_adjacent_point(search_grid,new_point,starting_point))
-                        {
-                            new_point = search_grid[new_x][new_y];
-                            adjacent_points.push(new_point);
-                        }
-                }
-        };
+    for (var i in adjustments) {
+        var x_adjustment = adjustments[i]
+        for (var j in adjustments) {
+            var y_adjustment = adjustments[j]
+            new_x = parseInt(starting_point[0]) + parseInt(x_adjustment);
+            new_y = parseInt(starting_point[1]) + parseInt(y_adjustment);
+            new_point = [new_x, new_y]
+            if (is_valid_adjacent_point(search_grid, new_point, starting_point)) {
+                adjacent_points.push(new_point);
+            }
+        }
+    };
     return adjacent_points;
 }
 
-//can initially go up, down, left, right, and diagonal
-//letters must be sequential (but can be spelled in reverse)
-//all letters must follow the same direction
-//cannot search outside the bounds of the grid or "jump" from the end of one side to the start of the other
+function next_point_is_match(current_point, next_point, letter, search_grid) {
+    if (is_valid_adjacent_point(search_grid, next_point, current_point) && (letter == search_grid[next_point[0]][[next_point[1]]])) {
+        return true
+    }
+    else return false;
+}
 
-var words = ["HI", "NO", "FUN"];
+function find_next_point_to_try(previous_point, current_point) {
+    var x_change = parseInt(previous_point[0]) - parseInt(current_point[0]);
+    var y_change = parseInt(previous_point[1]) - parseInt(current_point[1]);
+    var next_point_x = parseInt(current_point[0]) - x_change
+    var next_point_y = parseInt(current_point[1]) - y_change
+    var next_point = [next_point_x, next_point_y]
+    return next_point
+}
+
+var glbl_previous_point;
+var glbl_current_point;
+//TODO rework this, messy use of global variables, may be good use of recursion
+function check_for_match(search_grid, word, starting_point, current_point) {
+    if (word.length == 2) {
+        console.log("Found word " + word + " Starting at: " + starting_point + " Ending at: " + current_point)
+        return true
+    }
+
+    glbl_previous_point = starting_point;
+    glbl_current_point = current_point;
+    for (var i = 0; i < (word.length - 2); i++) {
+        var next_point = find_next_point_to_try(glbl_previous_point, glbl_current_point)
+        if (i + 3 == word.length && next_point_is_match(glbl_current_point, next_point, word.charAt(i + 2), search_grid)) {
+            console.log("Found word " + word + " Starting at: " + starting_point + " Ending at: " + glbl_current_point)
+            return true
+        }
+
+        else if (!next_point_is_match(glbl_current_point, next_point, word.charAt(i + 2), search_grid)) {
+            return false
+        }
+
+        else
+        {
+            glbl_previous_point = current_point;
+            glbl_current_point = next_point;
+        }
+    };
+
+    return false
+}
+
+var search_grid = [
+    ["F", "E", "L", "L"],
+    ["E", "U", "I", "H"],
+    ["I", "J", "N", "L"],
+    ["M", "K", "O", "P"]
+];
+
+var words = ["HI", "NO", "FUN", "FELL"];
 
 for (var i in words) {
-    console.log(words[i])
     var word = words[i]
     var first_letter = word.charAt(0)
-    var starts = search_grid_for_start(search_grid,first_letter)
-    console.log(starts[0]);
-    //TODO look in adjacent spot for matches
-    for (var i in starts)
-    {  
-        var adjacent_points = find_adjacent_points(search_grid,starts[i])
-            for (var j in adjacent_points)
-             {
-                 if (adjacent_points[j] = word.charAt(1))
-                    {
-                        console.log(adjacent_points[j])
-                    }
-             };
+    var starts = search_grid_for_start(search_grid, first_letter)
+    for (var i in starts) {
+        var adjacent_points = find_adjacent_points(search_grid, starts[i])
+        for (var j in adjacent_points) {
+            current_point = adjacent_points[j]
+            current_letter = search_grid[current_point[0]][[current_point[1]]]
+            if (current_letter == word.charAt(1)) {
+                check_for_match(search_grid, word, starts[i], current_point)
+            }
+        };
 
     }
 };
