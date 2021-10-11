@@ -22,6 +22,7 @@ function is_valid_adjacent_point(search_grid, point, starting_point) {
         return false
     }
     //TODO this will only work with a square grid
+    //TODO crashing here
     else if (point[0] >= search_grid.length || point[1] >= search_grid.length) {
         return false
     }
@@ -41,7 +42,6 @@ function find_adjacent_points(search_grid, starting_point) {
             new_y = parseInt(starting_point[1]) + parseInt(y_adjustment);
             new_point = [new_x, new_y]
             if (is_valid_adjacent_point(search_grid, new_point, starting_point)) {
-                new_point = search_grid[new_x][new_y];
                 adjacent_points.push(new_point);
             }
         }
@@ -49,20 +49,25 @@ function find_adjacent_points(search_grid, starting_point) {
     return adjacent_points;
 }
 
-function next_point_is_match(current_point, previous_point, letter, search_grid) {
-    var x_change = previous_point[0] - current_point[0];
-    var y_change = previous_point[1] - current_point[1];
-    var next_point_x = current_point[0] - x_change
-    var next_point_y = current_point[1] - y_change
-    var next_point = [next_point_x, next_point_y]
+function next_point_is_match(current_point, next_point, letter, search_grid) {
     if (is_valid_adjacent_point(search_grid, next_point, current_point) && (letter == search_grid[next_point_x][next_point_y])) {
-        return [true, next_point]
+        return [true]
     }
     else return false;
 }
 
+function find_next_point_to_try(previous_point,current_point) {
+    var x_change = parseInt(previous_point[0]) - parseInt(current_point[0]);
+    var y_change = parseInt(previous_point[1]) - parseInt(current_point[1]);
+    var next_point_x = parseInt(current_point[0]) - x_change
+    var next_point_y = parseInt(current_point[1]) - y_change
+    var next_point = [next_point_x, next_point_y]
+    console.log(next_point)
+    return next_point
+}
 
-function check_for_match(search_grid, word, previous_point, next_point) {
+
+function check_for_match(search_grid, word, starting_point, current_point) {
     //check for length of word and number of matches
     //if we have an equal number sequential of matches to the length of the word then return true
     //find direction to search by finding the difference from the second point to the starting point
@@ -71,15 +76,18 @@ function check_for_match(search_grid, word, previous_point, next_point) {
     //if the point is valid but doesn't match the character return false
 
     if (word.length == 2) {
+        console.log("Found word " + word + " Starting at: " + starting_point + " Ending at: " + current_point)
         return true
     }
-
+    
+    var previous_point = starting_point
     for (var i = 0; i < (word.length - 2); i++) {
-        if (i+3 == word.length && next_point_is_match(next_point, previous_point, word.charAt(i+3))) {
+        var next_point = find_next_point_to_try(previous_point,current_point)
+        if (i + 3 == word.length && next_point_is_match(next_point, previous_point, word.charAt(i + 3))) {
             return true
         }
 
-        else if (!next_point_is_match(second_point, previous_point, word.charAt(i+2))) {
+        else if (!next_point_is_match(second_point, previous_point, word.charAt(i + 2))) {
             return false
         }
     };
@@ -90,8 +98,8 @@ function check_for_match(search_grid, word, previous_point, next_point) {
 var search_grid = [
     ["F", "B", "C", "D"],
     ["E", "U", "I", "H"],
-    ["I", "J", "K", "L"],
-    ["M", "N", "O", "P"]
+    ["I", "J", "N", "L"],
+    ["M", "K", "O", "P"]
 ];
 
 var words = ["HI", "NO", "FUN"];
@@ -103,11 +111,13 @@ for (var i in words) {
     var starts = search_grid_for_start(search_grid, first_letter)
     console.log(starts[0]);
     for (var i in starts) {
+        //need to have grid here, not the letter
         var adjacent_points = find_adjacent_points(search_grid, starts[i])
         for (var j in adjacent_points) {
-            if (adjacent_points[j] == word.charAt(1)) {
-                console.log(adjacent_points[j])
-                console.log(check_for_match(search_grid, word, starts[i], adjacent_points[j]))
+            current_point = adjacent_points[j]
+            current_letter = search_grid[current_point[0]][[current_point[1]]]
+            if (current_letter == word.charAt(1)) {
+                console.log(check_for_match(search_grid, word, starts[i], current_point))
             }
         };
 
