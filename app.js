@@ -50,13 +50,13 @@ function find_adjacent_points(search_grid, starting_point) {
 }
 
 function next_point_is_match(current_point, next_point, letter, search_grid) {
-    if (is_valid_adjacent_point(search_grid, next_point, current_point) && (letter == search_grid[next_point_x][next_point_y])) {
+    if (is_valid_adjacent_point(search_grid, next_point, current_point) && (letter == search_grid[0][1])) {
         return [true]
     }
     else return false;
 }
 
-function find_next_point_to_try(previous_point,current_point) {
+function find_next_point_to_try(previous_point, current_point) {
     var x_change = parseInt(previous_point[0]) - parseInt(current_point[0]);
     var y_change = parseInt(previous_point[1]) - parseInt(current_point[1]);
     var next_point_x = parseInt(current_point[0]) - x_change
@@ -79,15 +79,15 @@ function check_for_match(search_grid, word, starting_point, current_point) {
         console.log("Found word " + word + " Starting at: " + starting_point + " Ending at: " + current_point)
         return true
     }
-    
+
     var previous_point = starting_point
     for (var i = 0; i < (word.length - 2); i++) {
-        var next_point = find_next_point_to_try(previous_point,current_point)
-        if (i + 3 == word.length && next_point_is_match(next_point, previous_point, word.charAt(i + 3))) {
+        var next_point = find_next_point_to_try(previous_point, current_point)
+        if (i + 3 == word.length && next_point_is_match(next_point, previous_point, word.charAt(i + 3), search_grid)) {
             return true
         }
 
-        else if (!next_point_is_match(second_point, previous_point, word.charAt(i + 2))) {
+        else if (!next_point_is_match(next_point, previous_point, word.charAt(i + 2), search_grid)) {
             return false
         }
     };
