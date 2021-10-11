@@ -64,30 +64,32 @@ function find_next_point_to_try(previous_point, current_point) {
     return next_point
 }
 
-
+var glbl_previous_point;
+var glbl_current_point;
+//TODO rework this, messy use of global variables, may be good use of recursion
 function check_for_match(search_grid, word, starting_point, current_point) {
-    //check for length of word and number of matches
-    //if we have an equal number sequential of matches to the length of the word then return true
-    //find direction to search by finding the difference from the second point to the starting point
-    //apply same difference to search down the rest of the line
-    //if down the line the next point isn't valid then return false
-    //if the point is valid but doesn't match the character return false
-
     if (word.length == 2) {
         console.log("Found word " + word + " Starting at: " + starting_point + " Ending at: " + current_point)
         return true
     }
 
-    var previous_point = starting_point
+    glbl_previous_point = starting_point;
+    glbl_current_point = current_point;
     for (var i = 0; i < (word.length - 2); i++) {
-        var next_point = find_next_point_to_try(previous_point, current_point)
-        if (i + 3 == word.length && next_point_is_match(current_point, next_point, word.charAt(i + 2), search_grid)) {
-            console.log("Found word " + word + " Starting at: " + starting_point + " Ending at: " + current_point)
+        var next_point = find_next_point_to_try(glbl_previous_point, glbl_current_point)
+        if (i + 3 == word.length && next_point_is_match(glbl_current_point, next_point, word.charAt(i + 2), search_grid)) {
+            console.log("Found word " + word + " Starting at: " + starting_point + " Ending at: " + glbl_current_point)
             return true
         }
 
-        else if (!next_point_is_match(next_point, current_point, word.charAt(i + 2), search_grid)) {
+        else if (!next_point_is_match(glbl_current_point, next_point, word.charAt(i + 2), search_grid)) {
             return false
+        }
+
+        else
+        {
+            glbl_previous_point = current_point;
+            glbl_current_point = next_point;
         }
     };
 
@@ -95,13 +97,13 @@ function check_for_match(search_grid, word, starting_point, current_point) {
 }
 
 var search_grid = [
-    ["F", "B", "C", "D"],
+    ["F", "E", "L", "L"],
     ["E", "U", "I", "H"],
     ["I", "J", "N", "L"],
     ["M", "K", "O", "P"]
 ];
 
-var words = ["HI", "NO", "FUN"];
+var words = ["HI", "NO", "FUN", "FELL"];
 
 for (var i in words) {
     var word = words[i]
