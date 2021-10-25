@@ -1,0 +1,7 @@
+{
+  "name": "word-search",
+  "description": "Solves word search puzzles",
+  "scripts": {
+    "test": "jest"
+  }
+}
