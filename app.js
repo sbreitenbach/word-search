@@ -127,3 +127,4 @@ function main(search_grid, words)
 
 module.exports.search_grid_for_start = search_grid_for_start;
 module.exports.find_next_point_to_try = find_next_point_to_try;
+module.exports.is_valid_adjacent_point = is_valid_adjacent_point
