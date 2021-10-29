@@ -1,0 +1,10 @@
+{
+  "name": "word-search",
+  "description": "Solves word search puzzles",
+  "scripts": {
+    "test": "jest"
+  },
+  "dependencies": {
+    "jest": "^27.3.1"
+  }
+}

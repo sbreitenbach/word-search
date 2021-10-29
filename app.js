@@ -105,19 +105,29 @@ var search_grid = [
 
 var words = ["HI", "NO", "FUN", "FELL"];
 
-for (var i in words) {
-    var word = words[i]
-    var first_letter = word.charAt(0)
-    var starts = search_grid_for_start(search_grid, first_letter)
-    for (var i in starts) {
-        var adjacent_points = find_adjacent_points(search_grid, starts[i])
-        for (var j in adjacent_points) {
-            current_point = adjacent_points[j]
-            current_letter = search_grid[current_point[0]][[current_point[1]]]
-            if (current_letter == word.charAt(1)) {
-                check_for_match(search_grid, word, starts[i], current_point)
-            }
-        };
+function main(search_grid, words)
+{
+    for (var i in words) {
+        var word = words[i]
+        var first_letter = word.charAt(0)
+        var starts = search_grid_for_start(search_grid, first_letter)
+        for (var i in starts) {
+            var adjacent_points = find_adjacent_points(search_grid, starts[i])
+            for (var j in adjacent_points) {
+                current_point = adjacent_points[j]
+                current_letter = search_grid[current_point[0]][[current_point[1]]]
+                if (current_letter == word.charAt(1)) {
+                    check_for_match(search_grid, word, starts[i], current_point)
+                }
+            };
+    
+        }
+    };
+}
 
-    }
-};
+module.exports.search_grid_for_start = search_grid_for_start;
+module.exports.find_next_point_to_try = find_next_point_to_try;
+module.exports.is_valid_adjacent_point = is_valid_adjacent_point;
+module.exports.next_point_is_match = next_point_is_match;
+module.exports.find_adjacent_points = find_adjacent_points;
+module.exports.find_next_point_to_try = find_next_point_to_try;
