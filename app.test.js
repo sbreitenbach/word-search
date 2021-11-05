@@ -9,7 +9,7 @@ test('finds initial grid', () => {
     ];
     var test_letter = "H"
 
-    expect(app.search_grid_for_start(test_grid, test_letter)).toEqual([["1", "3"]]);
+    expect(app.search_grid_for_start(test_grid, test_letter)).toEqual([[1, 3]]);
 });
 
 test('find next point to search', () => {
@@ -142,4 +142,43 @@ test('find adjacent points', () => {
     var current_point = [1,1]
 
     expect(app.find_next_point_to_try(previous_point,current_point)).toEqual([2,2]);
+});
+
+test('main search function 3 char word', () => {
+    var search_grid = [
+        ["F", "E", "L", "L"],
+        ["E", "U", "I", "H"],
+        ["I", "J", "N", "L"],
+        ["M", "K", "O", "P"]
+    ];
+    
+    var words = ["FUN","DOG"];
+
+    expect(app.main(search_grid,words)).toEqual([["FUN",[0,0],[1,1]]]);
+});
+
+test('main search function 2 char word', () => {
+    var search_grid = [
+        ["F", "E", "L", "L"],
+        ["E", "U", "I", "H"],
+        ["I", "J", "N", "L"],
+        ["M", "K", "O", "P"]
+    ];
+    
+    var words = ["HI"];
+
+    expect(app.main(search_grid,words)).toEqual([["HI",[1,3],[1,2]]]);
+});
+
+test('main does not find match', () => {
+    var search_grid = [
+        ["F", "E", "L", "L"],
+        ["E", "U", "I", "H"],
+        ["I", "J", "N", "L"],
+        ["M", "K", "O", "P"]
+    ];
+    
+    var words = ["FELT"];
+
+    expect(app.main(search_grid,words)).toEqual([]);
 });

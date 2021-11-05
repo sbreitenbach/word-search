@@ -7,6 +7,8 @@ function search_grid_for_start(grid, first_letter) {
         for (var y in row) {
             var letter = row[y]
             if (letter == first_letter) {
+                x = parseInt(x)
+                y = parseInt(y)
                 results.push([x, y])
             };
         }
@@ -68,9 +70,10 @@ var glbl_previous_point;
 var glbl_current_point;
 //TODO rework this, messy use of global variables, may be good use of recursion
 function check_for_match(search_grid, word, starting_point, current_point) {
+    //TODO bug here
     if (word.length == 2) {
-        console.log("Found word " + word + " Starting at: " + starting_point + " Ending at: " + current_point)
-        return true
+        var results = [word,starting_point,glbl_current_point]
+        return [true,results]
     }
 
     glbl_previous_point = starting_point;
@@ -79,7 +82,8 @@ function check_for_match(search_grid, word, starting_point, current_point) {
         var next_point = find_next_point_to_try(glbl_previous_point, glbl_current_point)
         if (i + 3 == word.length && next_point_is_match(glbl_current_point, next_point, word.charAt(i + 2), search_grid)) {
             console.log("Found word " + word + " Starting at: " + starting_point + " Ending at: " + glbl_current_point)
-            return true
+            var results = [word,starting_point,glbl_current_point]
+            return [true,results]
         }
 
         else if (!next_point_is_match(glbl_current_point, next_point, word.charAt(i + 2), search_grid)) {
@@ -96,17 +100,10 @@ function check_for_match(search_grid, word, starting_point, current_point) {
     return false
 }
 
-var search_grid = [
-    ["F", "E", "L", "L"],
-    ["E", "U", "I", "H"],
-    ["I", "J", "N", "L"],
-    ["M", "K", "O", "P"]
-];
-
-var words = ["HI", "NO", "FUN", "FELL"];
-
 function main(search_grid, words)
 {
+    //TODO arrays get messy, consider switching this to object
+    var results = [] 
     for (var i in words) {
         var word = words[i]
         var first_letter = word.charAt(0)
@@ -117,12 +114,17 @@ function main(search_grid, words)
                 current_point = adjacent_points[j]
                 current_letter = search_grid[current_point[0]][[current_point[1]]]
                 if (current_letter == word.charAt(1)) {
-                    check_for_match(search_grid, word, starts[i], current_point)
-                }
+                    var check = check_for_match(search_grid, word, starts[i], current_point);
+                    if(check[0])
+                    {
+                        results.push(check[1]);
+                    }
+                };
             };
     
-        }
+        };
     };
+    return results;
 }
 
 module.exports.search_grid_for_start = search_grid_for_start;
@@ -131,3 +133,4 @@ module.exports.is_valid_adjacent_point = is_valid_adjacent_point;
 module.exports.next_point_is_match = next_point_is_match;
 module.exports.find_adjacent_points = find_adjacent_points;
 module.exports.find_next_point_to_try = find_next_point_to_try;
+module.exports.main = main;
