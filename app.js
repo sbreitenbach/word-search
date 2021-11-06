@@ -72,7 +72,7 @@ var glbl_current_point;
 function check_for_match(search_grid, word, starting_point, current_point) {
     //TODO bug here
     if (word.length == 2) {
-        var results = [word,starting_point,glbl_current_point]
+        var results = [word,starting_point,current_point]
         return [true,results]
     }
 
