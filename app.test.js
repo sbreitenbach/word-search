@@ -182,3 +182,16 @@ test('main does not find match', () => {
 
     expect(app.main(search_grid,words)).toEqual([]);
 });
+
+test('main search multiple words', () => {
+    var search_grid = [
+        ["F", "E", "L", "L"],
+        ["E", "U", "I", "H"],
+        ["I", "J", "N", "L"],
+        ["M", "K", "O", "P"]
+    ];
+    
+    var words = ["HI","FUN","DOG"];
+
+    expect(app.main(search_grid,words)).toEqual([["HI",[1,3],[1,2]],["FUN",[0,0],[1,1]]]);
+});

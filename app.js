@@ -96,8 +96,6 @@ function check_for_match(search_grid, word, starting_point, current_point) {
             glbl_current_point = next_point;
         }
     };
-
-    return false
 }
 
 function main(search_grid, words)
