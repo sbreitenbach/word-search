@@ -72,8 +72,18 @@ var glbl_current_point;
 function check_for_match(search_grid, word, starting_point, current_point) {
     //TODO bug here
     if (word.length == 2) {
-        var results = [word,starting_point,current_point]
-        return [true,results]
+        var result = {
+            "word" : word,
+            "starting_grid" : {
+                "x": starting_point[0],
+                "y": starting_point[1]
+            },
+            "ending_grid" : {
+                "x": current_point[0],
+                "y": current_point[1]
+            }
+        }
+        return [true,result]
     }
 
     glbl_previous_point = starting_point;
@@ -82,8 +92,19 @@ function check_for_match(search_grid, word, starting_point, current_point) {
         var next_point = find_next_point_to_try(glbl_previous_point, glbl_current_point)
         if (i + 3 == word.length && next_point_is_match(glbl_current_point, next_point, word.charAt(i + 2), search_grid)) {
             console.log("Found word " + word + " Starting at: " + starting_point + " Ending at: " + glbl_current_point)
-            var results = [word,starting_point,glbl_current_point]
-            return [true,results]
+            //[word,starting_point,glbl_current_point]
+            var result = {
+                "word" : word,
+                "starting_grid" : {
+                    "x": starting_point[0],
+                    "y": starting_point[1]
+                },
+                "ending_grid" : {
+                    "x": next_point[0],
+                    "y": next_point[1]
+                }
+            }
+            return [true,result]
         }
 
         else if (!next_point_is_match(glbl_current_point, next_point, word.charAt(i + 2), search_grid)) {
