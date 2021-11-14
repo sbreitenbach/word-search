@@ -156,20 +156,21 @@ test('main search function 3 char word', () => {
 
     var words = ["FUN", "DOG"];
 
-    var expected =
-    {
-        "word": "FUN",
-        "starting_grid": {
-            "x": 0,
-            "y": 0
-        },
-        "ending_grid": {
-            "x": 2,
-            "y": 2
-        }
+    var expected = {
+        "results": [{
+            "word": "FUN",
+            "starting_grid": {
+                "x": 0,
+                "y": 0
+            },
+            "ending_grid": {
+                "x": 2,
+                "y": 2
+            }
+        }]
     }
 
-    expect(app.main(search_grid, words)).toEqual([expected]);
+    expect(app.main(search_grid, words)).toEqual(expected);
 });
 
 test('main search function 2 char word', () => {
@@ -182,20 +183,21 @@ test('main search function 2 char word', () => {
 
     var words = ["HI"];
 
-    var expected =
-    {
-        "word": "HI",
-        "starting_grid": {
-            "x": 1,
-            "y": 3
-        },
-        "ending_grid": {
-            "x": 1,
-            "y": 2
-        }
+    var expected = {
+        "results": [{
+            "word": "HI",
+            "starting_grid": {
+                "x": 1,
+                "y": 3
+            },
+            "ending_grid": {
+                "x": 1,
+                "y": 2
+            }
+        }]
     }
 
-    expect(app.main(search_grid, words)).toEqual([expected]);
+    expect(app.main(search_grid, words)).toEqual(expected);
 });
 
 test('main does not find match', () => {
@@ -208,7 +210,9 @@ test('main does not find match', () => {
 
     var words = ["FELT"];
 
-    expect(app.main(search_grid, words)).toEqual([]);
+    expect(app.main(search_grid, words)).toEqual({
+        "results": []
+    });
 });
 
 test('main search multiple words', () => {
@@ -221,18 +225,20 @@ test('main search multiple words', () => {
 
     var words = ["HI", "FUN", "DOG"];
 
-    var expected =[
-        {
-            "word": "HI",
-            "starting_grid": { "x": 1, "y": 3},
-            "ending_grid": { "x": 1, "y": 2}
-        },
-        {
-            "word": "FUN",
-            "starting_grid": { "x": 0, "y": 0},
-            "ending_grid": {"x": 2, "y": 2}
-        }
-    ]
+    var expected = {
+        "results": [
+            {
+                "word": "HI",
+                "starting_grid": { "x": 1, "y": 3 },
+                "ending_grid": { "x": 1, "y": 2 }
+            },
+            {
+                "word": "FUN",
+                "starting_grid": { "x": 0, "y": 0 },
+                "ending_grid": { "x": 2, "y": 2 }
+            }
+        ]
+    }
 
     expect(app.main(search_grid, words)).toEqual(expected);
 });

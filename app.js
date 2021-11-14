@@ -73,17 +73,17 @@ function check_for_match(search_grid, word, starting_point, current_point) {
     //TODO bug here
     if (word.length == 2) {
         var result = {
-            "word" : word,
-            "starting_grid" : {
+            "word": word,
+            "starting_grid": {
                 "x": starting_point[0],
                 "y": starting_point[1]
             },
-            "ending_grid" : {
+            "ending_grid": {
                 "x": current_point[0],
                 "y": current_point[1]
             }
         }
-        return [true,result]
+        return [true, result]
     }
 
     glbl_previous_point = starting_point;
@@ -94,35 +94,33 @@ function check_for_match(search_grid, word, starting_point, current_point) {
             console.log("Found word " + word + " Starting at: " + starting_point + " Ending at: " + glbl_current_point)
             //[word,starting_point,glbl_current_point]
             var result = {
-                "word" : word,
-                "starting_grid" : {
+                "word": word,
+                "starting_grid": {
                     "x": starting_point[0],
                     "y": starting_point[1]
                 },
-                "ending_grid" : {
+                "ending_grid": {
                     "x": next_point[0],
                     "y": next_point[1]
                 }
             }
-            return [true,result]
+            return [true, result]
         }
 
         else if (!next_point_is_match(glbl_current_point, next_point, word.charAt(i + 2), search_grid)) {
             return false
         }
 
-        else
-        {
+        else {
             glbl_previous_point = current_point;
             glbl_current_point = next_point;
         }
     };
 }
 
-function main(search_grid, words)
-{
+function main(search_grid, words) {
     //TODO arrays get messy, consider switching this to object
-    var results = [] 
+    var results = []
     for (var i in words) {
         var word = words[i]
         var first_letter = word.charAt(0)
@@ -134,16 +132,17 @@ function main(search_grid, words)
                 current_letter = search_grid[current_point[0]][[current_point[1]]]
                 if (current_letter == word.charAt(1)) {
                     var check = check_for_match(search_grid, word, starts[i], current_point);
-                    if(check[0])
-                    {
+                    if (check[0]) {
                         results.push(check[1]);
                     }
                 };
             };
-    
+
         };
     };
-    return results;
+    return {
+        "results": results
+    };
 }
 
 module.exports.search_grid_for_start = search_grid_for_start;
