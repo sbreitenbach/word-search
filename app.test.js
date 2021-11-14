@@ -1,4 +1,3 @@
-const exp = require('constants');
 const app = require('./app');
 
 test('finds initial grid', () => {
@@ -146,7 +145,6 @@ test('find adjacent points', () => {
 });
 
 test('main search function 3 char word', () => {
-    //TODO this test is wrong
     var search_grid = [
         ["F", "E", "L", "L"],
         ["E", "U", "I", "H"],
@@ -241,4 +239,42 @@ test('main search multiple words', () => {
     }
 
     expect(app.main(search_grid, words)).toEqual(expected);
+});
+
+test('main search function 3 char word', () => {
+    var search_grid = [
+        ["F", "E", "L", "L"],
+        ["E", "U", "I", "H"],
+        ["I", "J", "N", "L"],
+        ["M", "K", "O", "P"]
+    ];
+
+    var event = {
+        "search_grid": [
+            ["F", "E", "L", "L"],
+            ["E", "U", "I", "H"],
+            ["I", "J", "N", "L"],
+            ["M", "K", "O", "P"]
+        ],
+        "words": ["HI", "FUN", "DOG"]
+    }
+
+    var expected = {
+        "results": [
+            {
+                "word": "HI",
+                "starting_grid": { "x": 1, "y": 3 },
+                "ending_grid": { "x": 1, "y": 2 }
+            },
+            {
+                "word": "FUN",
+                "starting_grid": { "x": 0, "y": 0 },
+                "ending_grid": { "x": 2, "y": 2 }
+            }
+        ]
+    }
+
+    return app.handler(event).then(data => {
+        expect(data).toStrictEqual(expected);
+    });
 });
