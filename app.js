@@ -91,8 +91,6 @@ function check_for_match(search_grid, word, starting_point, current_point) {
     for (var i = 0; i < (word.length - 2); i++) {
         var next_point = find_next_point_to_try(glbl_previous_point, glbl_current_point)
         if (i + 3 == word.length && next_point_is_match(glbl_current_point, next_point, word.charAt(i + 2), search_grid)) {
-            console.log("Found word " + word + " Starting at: " + starting_point + " Ending at: " + glbl_current_point)
-            //[word,starting_point,glbl_current_point]
             var result = {
                 "word": word,
                 "starting_grid": {
@@ -152,3 +150,13 @@ module.exports.next_point_is_match = next_point_is_match;
 module.exports.find_adjacent_points = find_adjacent_points;
 module.exports.find_next_point_to_try = find_next_point_to_try;
 module.exports.main = main;
+
+exports.handler = async (event) => {
+    // TODO implement
+    console.log(event)
+    var search_grid = event.search_grid
+    var words = event.words
+    var result = main(search_grid,words)
+    console.log(result)
+    return result;
+};
